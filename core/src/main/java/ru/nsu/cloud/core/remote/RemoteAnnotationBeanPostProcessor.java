@@ -5,13 +5,19 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cglib.proxy.Proxy;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import ru.nsu.cloud.core.remote.loadbalance.BalanceStrategy;
 import ru.nsu.cloud.core.remote.loadbalance.BalanceStrategyFactory;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+
+import static ru.nsu.cloud.model.constant.Constants.HTTP_PREFIX;
+import static ru.nsu.cloud.model.constant.Constants.TASK_ENDPOINT;
 
 @Slf4j
 @Component
@@ -56,10 +62,19 @@ public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
 
                     if (inheritedMethod.isAnnotationPresent(Remote.class)) {
                         String requestAddress = balanceStrategy.getNextAddress();
+                        Integer callTimeout = inheritedMethod.getAnnotation(Remote.class).timeout();
 
                         log.info("Remote call to {}", requestAddress);
 
-
+                        return new RestTemplate().exchange(
+                            HTTP_PREFIX + requestAddress + TASK_ENDPOINT,
+                            HttpMethod.POST,
+                            new HttpEntity<>(
+                                null,
+                                null
+                            ),
+                            method.getReturnType()
+                        );
                     }
 
                     return method.invoke(bean, args);

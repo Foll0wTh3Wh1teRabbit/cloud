@@ -15,3 +15,11 @@ bootJar {
         attributes('Implementation-Version': archiveVersion, 'Start-Class': 'ru.nsu.cloud.manager.ManagerApplication')
     }
 }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact bootJar
+        }
+    }
+}

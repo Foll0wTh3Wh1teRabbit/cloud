@@ -10,7 +10,6 @@
         <module name="cloud.manager.main" />
         <module name="cloud.model.main" />
         <module name="cloud.executor.main" />
-        <module name="cloud.http-client.main" />
         <module name="cloud.core.main" />
         <module name="cloud.test-application.main" />
       </profile>
