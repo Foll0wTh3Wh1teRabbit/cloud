@@ -2,4 +2,8 @@ rootProject.name = 'cloud'
 
 include 'manager'
 include 'executor'
+include 'core'
+include 'test-application'
+include 'model'
+include 'http-client'
 

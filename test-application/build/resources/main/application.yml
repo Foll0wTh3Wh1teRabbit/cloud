@@ -1,0 +1,4 @@
+nsucloud:
+  hosts: localhost:8080,localhost:8081
+  balancer:
+    strategy: roundrobin

@@ -1,0 +1,15 @@
+dependencies {
+    implementation project(':core')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+bootJar.enabled = true
+
+bootJar {
+    archiveClassifier.set 'boot'
+
+    manifest {
+        attributes('Implementation-Version': archiveVersion, 'Start-Class': 'ru.nsu.TestApplication')
+    }
+}

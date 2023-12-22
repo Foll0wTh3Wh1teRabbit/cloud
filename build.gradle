@@ -1,18 +1,11 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.2.0'
-    id 'io.spring.dependency-management' version '1.1.4'
-}
-
-allprojects {
-    group = 'ru.nsu'
-
-    java {
-        sourceCompatibility = '17'
-    }
-
+buildscript {
     repositories {
         mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.6.7'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.1.0'
     }
 }
 
@@ -21,6 +14,16 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
+    group = 'ru.nsu.cloud'
+
+    java {
+        sourceCompatibility = '17'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
     dependencies {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
@@ -28,5 +31,14 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter'
 
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    }
+
+    bootJar.enabled = false
+    jar.enabled = true
+
+    test {
+        useJUnitPlatform()
     }
 }
