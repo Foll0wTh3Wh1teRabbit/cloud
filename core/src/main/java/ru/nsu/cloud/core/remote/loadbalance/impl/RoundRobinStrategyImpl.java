@@ -11,7 +11,7 @@ public class RoundRobinStrategyImpl extends AbstractBalanceStrategy {
     private CyclicQueue<String> hostsQueue;
 
     @Override
-    public String getNextHost() {
+    public String getNextAddress() {
         return hostsQueue.getNext();
     }
 

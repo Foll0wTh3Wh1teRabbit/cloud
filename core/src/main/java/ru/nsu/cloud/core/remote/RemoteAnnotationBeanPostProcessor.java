@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cglib.proxy.Proxy;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import ru.nsu.cloud.core.remote.loadbalance.BalanceStrategy;
 import ru.nsu.cloud.core.remote.loadbalance.BalanceStrategyFactory;
 
@@ -19,8 +18,6 @@ import java.util.List;
 public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
 
     private BalanceStrategy balanceStrategy;
-
-    private RestTemplate restTemplate;
 
     @Value("${nsucloud.balancer.strategy}")
     private String strategy;
@@ -35,8 +32,6 @@ public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-
-        restTemplate = new RestTemplate();
 
         return bean;
     }
@@ -60,7 +55,9 @@ public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
                     );
 
                     if (inheritedMethod.isAnnotationPresent(Remote.class)) {
-                        log.info("Remote call to {}", balanceStrategy.getNextHost());
+                        String requestAddress = balanceStrategy.getNextAddress();
+
+                        log.info("Remote call to {}", requestAddress);
 
 
                     }

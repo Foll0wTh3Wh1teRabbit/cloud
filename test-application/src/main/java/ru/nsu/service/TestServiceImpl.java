@@ -1,18 +1,20 @@
 package ru.nsu.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.nsu.cloud.core.remote.Remote;
 
+@Slf4j
 @Service
 public class TestServiceImpl implements TestService {
 
-    @Remote
+    @Remote(timeout = 10000)
     public void executeRemote() {
-        System.out.println(1);
+        log.info("executeRemote <-");
     }
 
     public void executeLocal() {
-        System.out.println(2);
+        log.info("executeLocal <-");
     }
 
 }
