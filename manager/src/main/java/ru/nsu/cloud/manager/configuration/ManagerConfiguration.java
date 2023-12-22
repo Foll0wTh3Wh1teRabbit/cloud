@@ -5,13 +5,11 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
-@EnableScheduling
 public class ManagerConfiguration {
 
-    public static final String EXECUTORS_HEALTH_CHECK_MAP = "healthCheckMap";
+    public static final String AVAILABLE_EXECUTORS_MAP = "availableExecutors";
 
     @Bean
     public Config config(){

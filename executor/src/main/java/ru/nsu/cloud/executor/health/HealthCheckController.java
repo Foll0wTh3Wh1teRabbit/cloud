@@ -1,6 +1,5 @@
-package ru.nsu.cloud.executor.healthcheck;
+package ru.nsu.cloud.executor.health;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;

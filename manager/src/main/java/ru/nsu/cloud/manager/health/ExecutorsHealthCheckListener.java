@@ -1,4 +1,4 @@
-package ru.nsu.cloud.manager.healthcheck;
+package ru.nsu.cloud.manager.health;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import ru.nsu.cloud.model.HealthCheckMessage;
+import ru.nsu.cloud.model.health.HealthCheckNodeInformation;
 
 @Slf4j
 @Service
@@ -21,10 +21,10 @@ public class ExecutorsHealthCheckListener {
     public void healthCheckReceive(String healthCheckMessage) {
         log.info("healthCheckReceive <- healthCheckMessage:{}", healthCheckMessage);
 
-        HealthCheckMessage deserializedMessage;
+        HealthCheckNodeInformation deserializedMessage;
 
         try {
-            deserializedMessage = objectMapper.readValue(healthCheckMessage, HealthCheckMessage.class);
+            deserializedMessage = objectMapper.readValue(healthCheckMessage, HealthCheckNodeInformation.class);
         } catch (JsonProcessingException ignored) {
             throw new RuntimeException("Deserialization error");
         }

@@ -1,4 +1,4 @@
-package ru.nsu.cloud.executor.healthcheck;
+package ru.nsu.cloud.executor.health;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.nsu.cloud.model.HealthCheckMessage;
+import ru.nsu.cloud.model.health.HealthCheckNodeInformation;
 import ru.nsu.cloud.executor.configuration.ExecutorConfiguration;
 
 import java.net.InetAddress;
@@ -31,12 +31,12 @@ public class HealthCheckNotifier {
     public void sendHealthCheckMessage() throws JsonProcessingException {
         log.info("sendHealthCheckMessage <-");
 
-        HealthCheckMessage healthCheckMessage = HealthCheckMessage.builder()
+        HealthCheckNodeInformation healthCheckNodeInformation = HealthCheckNodeInformation.builder()
             .workingHost(InetAddress.getLoopbackAddress().getHostName())
             .workingPort(port)
             .build();
 
-        String serializedMessage = objectMapper.writeValueAsString(healthCheckMessage);
+        String serializedMessage = objectMapper.writeValueAsString(healthCheckNodeInformation);
 
         rabbitTemplate.send(
             ExecutorConfiguration.EXCHANGE,
