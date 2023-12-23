@@ -1,3 +1,13 @@
 dependencies {
-    implementation project(':http-client')
+    implementation project(':model')
+
+    implementation 'org.springframework:spring-web'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact jar
+        }
+    }
 }

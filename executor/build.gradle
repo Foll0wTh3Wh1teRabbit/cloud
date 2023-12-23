@@ -14,3 +14,11 @@ bootJar {
         attributes('Implementation-Version': archiveVersion, 'Start-Class': 'ru.nsu.cloud.executor.ExecutorApplication')
     }
 }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact bootJar
+        }
+    }
+}

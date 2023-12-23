@@ -8,7 +8,7 @@ import ru.nsu.cloud.core.remote.Remote;
 @Service
 public class TestServiceImpl implements TestService {
 
-    @Remote(timeout = 10000)
+    @Remote
     public void executeRemote() {
         log.info("executeRemote <-");
     }
