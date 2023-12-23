@@ -8,7 +8,7 @@ import ru.nsu.cloud.core.remote.Remote;
 @Service
 public class TestServiceImpl implements TestService {
 
-    @Remote
+    @Remote(cpu = 1, gpu = 1)
     public void executeRemote() {
         log.info("executeRemote <-");
     }
