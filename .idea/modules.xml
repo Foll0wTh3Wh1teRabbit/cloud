@@ -7,6 +7,11 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/manager/cloud.manager.main.iml" filepath="$PROJECT_DIR$/.idea/modules/manager/cloud.manager.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/model/cloud.model.main.iml" filepath="$PROJECT_DIR$/.idea/modules/model/cloud.model.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-application/cloud.test-application.main.iml" filepath="$PROJECT_DIR$/.idea/modules/test-application/cloud.test-application.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/ru.nsu.cloud.cloud.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/ru.nsu.cloud.cloud.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/executor/ru.nsu.cloud.cloud.executor.main.iml" filepath="$PROJECT_DIR$/.idea/modules/executor/ru.nsu.cloud.cloud.executor.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/manager/ru.nsu.cloud.cloud.manager.main.iml" filepath="$PROJECT_DIR$/.idea/modules/manager/ru.nsu.cloud.cloud.manager.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model/ru.nsu.cloud.cloud.model.main.iml" filepath="$PROJECT_DIR$/.idea/modules/model/ru.nsu.cloud.cloud.model.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-application/ru.nsu.cloud.cloud.test-application.main.iml" filepath="$PROJECT_DIR$/.idea/modules/test-application/ru.nsu.cloud.cloud.test-application.main.iml" />
     </modules>
   </component>
 </project>
