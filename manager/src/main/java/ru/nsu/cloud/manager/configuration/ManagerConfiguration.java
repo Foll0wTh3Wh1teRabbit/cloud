@@ -12,12 +12,12 @@ public class ManagerConfiguration {
     public static final String AVAILABLE_EXECUTORS_MAP = "availableExecutors";
 
     @Bean
-    public Config config(){
+    public Config config() {
         return new Config();
     }
 
     @Bean
-    public HazelcastInstance hazelcastInstance(Config config){
+    public HazelcastInstance hazelcastInstance(Config config) {
         return Hazelcast.newHazelcastInstance(config);
     }
 

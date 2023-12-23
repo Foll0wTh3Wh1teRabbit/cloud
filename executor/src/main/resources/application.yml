@@ -1,2 +1,7 @@
+nsucloud:
+  executor:
+    cpu: 2
+    gpu: 2
+
 server:
-  port: 8084
+  port: 8086

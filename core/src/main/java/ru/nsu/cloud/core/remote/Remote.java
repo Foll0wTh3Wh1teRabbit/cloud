@@ -9,9 +9,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Remote {
 
-    int cpu() default 1;
+    int cpu() default 0;
 
-    int gpu() default 1;
+    int gpu() default 0;
 
     int timeout() default 30000;
 
