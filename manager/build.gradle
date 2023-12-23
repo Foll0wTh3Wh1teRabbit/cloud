@@ -12,7 +12,7 @@ bootJar {
     archiveClassifier.set 'boot'
 
     manifest {
-        attributes('Implementation-Version': archiveVersion, 'Start-Class': 'ru.nsu.cloud.manager.ManagerApplication')
+        attributes('Implementation-Version': archiveVersion, 'Start-Class': 'ru.nsu.ManagerApplication')
     }
 }
 

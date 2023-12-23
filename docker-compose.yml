@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    volumes:
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./definitions.json:/etc/rabbitmq/definitions.json:ro
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+
+  manager1:
+    build: ./manager
+    ports:
+      - "8081:8081"
+    environment:
+      - SERVER_PORT=8081
+
+  manager2:
+    build: ./manager
+    ports:
+      - "8082:8082"
+    environment:
+      - SERVER_PORT=8082
+
+  manager3:
+    build: ./manager
+    ports:
+      - "8083:8083"
+    environment:
+      - SERVER_PORT=8083
