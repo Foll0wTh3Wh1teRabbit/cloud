@@ -5,10 +5,14 @@ import lombok.Data;
 
 @Data
 @Builder
-public class HealthCheckNodeInformation {
+public class HealthCheckExecutorInformation {
 
     private String workingHost;
 
     private String workingPort;
+
+    private Integer cpu;
+
+    private Integer gpu;
 
 }

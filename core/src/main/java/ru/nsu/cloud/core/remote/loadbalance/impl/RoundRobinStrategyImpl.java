@@ -1,7 +1,8 @@
 package ru.nsu.cloud.core.remote.loadbalance.impl;
 
 import ru.nsu.cloud.core.remote.loadbalance.AbstractBalanceStrategy;
-import ru.nsu.cloud.core.remote.loadbalance.exception.NoAvailableHostsException;
+import ru.nsu.cloud.model.exception.NoAvailableManagersException;
+
 import java.util.List;
 
 public class RoundRobinStrategyImpl extends AbstractBalanceStrategy {
@@ -13,7 +14,7 @@ public class RoundRobinStrategyImpl extends AbstractBalanceStrategy {
             .toList();
 
         if (availableHosts.isEmpty()) {
-            throw new NoAvailableHostsException();
+            throw new NoAvailableManagersException();
         }
 
         return availableHosts.get(CyclicCounter.getNextCounterValue(hosts.size()) % availableHosts.size());

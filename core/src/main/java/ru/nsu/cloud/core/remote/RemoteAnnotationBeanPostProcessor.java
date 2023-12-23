@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.nsu.cloud.core.remote.loadbalance.BalanceStrategy;
 import ru.nsu.cloud.core.remote.loadbalance.BalanceStrategyFactory;
+import ru.nsu.cloud.model.task.Task;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -60,21 +61,9 @@ public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
                             .toArray(new Class<?>[0])
                     );
 
+                    // TODO response timeouts & code marshalling & pass not only tasks
                     if (inheritedMethod.isAnnotationPresent(Remote.class)) {
-                        String requestAddress = balanceStrategy.getNextAddress();
-                        Integer callTimeout = inheritedMethod.getAnnotation(Remote.class).timeout();
-
-                        log.info("Remote call to {}", requestAddress);
-
-                        return new RestTemplate().exchange(
-                            HTTP_PREFIX + requestAddress + TASK_ENDPOINT,
-                            HttpMethod.POST,
-                            new HttpEntity<>(
-                                null,
-                                null
-                            ),
-                            method.getReturnType()
-                        );
+                        return buildRestTemplateAndPerformHttpCall(inheritedMethod);
                     }
 
                     return method.invoke(bean, args);
@@ -82,6 +71,32 @@ public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
         }
 
         return bean;
+    }
+
+    private Object buildRestTemplateAndPerformHttpCall(Method inheritedMethod) {
+        String requestAddress = balanceStrategy.getNextAddress();
+
+        Integer callTimeout = inheritedMethod.getAnnotation(Remote.class).timeout();
+        Integer cpuParam = inheritedMethod.getAnnotation(Remote.class).cpu();
+        Integer gpuParam = inheritedMethod.getAnnotation(Remote.class).gpu();
+
+        Task task = Task.builder()
+            .cpu(cpuParam)
+            .gpu(gpuParam)
+            .build();
+
+        log.info("Remote call to {}, task={}", requestAddress, task);
+
+        return new RestTemplate()
+            .exchange(
+                HTTP_PREFIX + requestAddress + TASK_ENDPOINT,
+                HttpMethod.POST,
+                new HttpEntity<>(
+                    task,
+                    null
+                ),
+                inheritedMethod.getReturnType()
+            );
     }
 
 }
