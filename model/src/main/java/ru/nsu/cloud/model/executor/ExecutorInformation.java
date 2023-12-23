@@ -9,7 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExecutorInformation implements Serializable {

@@ -61,7 +61,6 @@ public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
                             .toArray(new Class<?>[0])
                     );
 
-                    // TODO response timeouts & code marshalling & pass not only tasks
                     if (inheritedMethod.isAnnotationPresent(Remote.class)) {
                         return buildRestTemplateAndPerformHttpCall(inheritedMethod);
                     }
@@ -73,6 +72,7 @@ public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
+    // TODO response timeouts & code marshalling & pass not only tasks
     private Object buildRestTemplateAndPerformHttpCall(Method inheritedMethod) {
         String requestAddress = balanceStrategy.getNextAddress();
 
@@ -83,9 +83,10 @@ public class RemoteAnnotationBeanPostProcessor implements BeanPostProcessor {
         Task task = Task.builder()
             .cpu(cpuParam)
             .gpu(gpuParam)
+            .timeout(callTimeout)
             .build();
 
-        log.info("Remote call to {}, task={}", requestAddress, task);
+        log.trace("Remote call to {}, task={}", requestAddress, task);
 
         return new RestTemplate()
             .exchange(
