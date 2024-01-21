@@ -8,6 +8,22 @@
       "arguments": {
         "x-message-ttl": 1000
       }
+    },
+    {
+      "name": "manager2executor",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {
+      }
+    },
+    {
+      "name": "executor2manager",
+      "vhost": "/",
+      "durable": false,
+      "auto_delete": false,
+      "arguments": {
+      }
     }
   ],
   "exchanges": [
@@ -28,6 +44,22 @@
       "destination": "healthcheck",
       "destination_type": "queue",
       "routing_key": "healthcheck",
+      "arguments": {}
+    },
+    {
+      "source": "cloudExchange",
+      "vhost": "/",
+      "destination": "manager2executor",
+      "destination_type": "queue",
+      "routing_key": "manager2executor",
+      "arguments": {}
+    },
+    {
+      "source": "cloudExchange",
+      "vhost": "/",
+      "destination": "executor2manager",
+      "destination_type": "queue",
+      "routing_key": "executor2manager",
       "arguments": {}
     }
   ],
