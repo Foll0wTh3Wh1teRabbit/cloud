@@ -10,14 +10,6 @@
       }
     },
     {
-      "name": "manager2executor",
-      "vhost": "/",
-      "durable": false,
-      "auto_delete": false,
-      "arguments": {
-      }
-    },
-    {
       "name": "executor2manager",
       "vhost": "/",
       "durable": false,

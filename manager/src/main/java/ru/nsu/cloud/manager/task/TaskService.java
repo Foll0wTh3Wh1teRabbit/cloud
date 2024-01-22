@@ -1,52 +1,68 @@
 package ru.nsu.cloud.manager.task;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.map.IMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.nsu.cloud.manager.configuration.ManagerConfiguration;
-import ru.nsu.cloud.manager.selector.ExecutorSelector;
-import ru.nsu.cloud.model.executor.ExecutorInformation;
+import ru.nsu.cloud.model.exception.NoAvailableExecutorsException;
+import ru.nsu.cloud.model.task.FunctionTask;
 import ru.nsu.cloud.model.task.Task;
+import ru.nsu.cloud.manager.configuration.ManagerConfiguration;
+import ru.nsu.cloud.model.executor.ExecutorInformation;
+import ru.nsu.cloud.model.task.TaskWithId;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TaskService {
 
-    private final ExecutorSelector equalTaskAssumptionExecutorSelector;
-
     private final HazelcastInstance hazelcastInstance;
 
-    public void processTask(Task task) {
-        log.info("processTask <- task:{}", task);
+    private final TaskSender taskSender;
 
-        String selectedNode = executorNodeSelection(task);
+    public <T> void processTask(Task<T> task, String taskUuid) {
+        log.info("processTask <- task: {}, id: {}", task, taskUuid);
 
-        // TODO pass to executor
+        if (!areExecutorsForTaskExist(task.getInstanceTo())) {
+            throw new NoAvailableExecutorsException();
+        }
+
+        taskSender.sendTask(
+            TaskWithId.<T>builder()
+                .task(task)
+                .taskId(taskUuid)
+                .build(),
+            getRoutingKeyToSend(task.getInstanceTo(), true)
+        );
+
+        log.info("processTask -> ");
     }
 
-    private String executorNodeSelection(Task task) {
-        hazelcastInstance.getCPSubsystem().getLock(ManagerConfiguration.EXECUTOR_SELECTION_LOCK).lock();
-        log.info("executorNodeSelection <- task:{}, lock acquired", task);
+    public <T, R> R processTaskAndReceiveResult(FunctionTask<T, R> task, String taskUuid) {
+        log.info("processTaskAndReceiveResult <- task: {}, id: {}", task, taskUuid);
 
-        IMap<String, ExecutorInformation> nodesMap = hazelcastInstance.getMap(ManagerConfiguration.AVAILABLE_EXECUTORS_MAP);
+        R result = taskSender.sendTaskAndAwaitForResult(
+            TaskWithId.<T>builder()
+                .task(task)
+                .taskId(taskUuid)
+                .build(),
+            getRoutingKeyToSend(task.getInstanceTo(), false)
+        );
 
-        String selectedExecutorNode = equalTaskAssumptionExecutorSelector.selectExecutor(task, nodesMap);
+        log.info("processTaskAndReceiveResult -> result: {}", result);
 
-        Integer currentProcessesValue = nodesMap.get(selectedExecutorNode).getProcessesRunning();
-        ExecutorInformation updatedExecutorInformation = nodesMap.get(selectedExecutorNode)
-            .toBuilder()
-            .processesRunning(currentProcessesValue + 1)
-            .build();
+        return result;
+    }
 
-        nodesMap.set(selectedExecutorNode, updatedExecutorInformation);
+    private boolean areExecutorsForTaskExist(String taskClass) {
+        return hazelcastInstance.<String, ExecutorInformation> getMap(ManagerConfiguration.AVAILABLE_EXECUTORS_MAP)
+            .values()
+            .stream()
+            .anyMatch(it -> it.getInstanceName().equals(taskClass));
+    }
 
-        log.info("executorNodeSelection -> executor:{}, lock releasing", selectedExecutorNode);
-        hazelcastInstance.getCPSubsystem().getLock(ManagerConfiguration.EXECUTOR_SELECTION_LOCK).unlock();
-
-        return selectedExecutorNode;
+    private String getRoutingKeyToSend(String instanceTo, boolean isAsync) {
+        return String.format("manager2%s%s", instanceTo, isAsync ? "Async" : "");
     }
 
 }

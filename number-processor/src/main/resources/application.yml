@@ -1,0 +1,15 @@
+nsucloud:
+  executor:
+    instanceName: NumberProcessor
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+logging:
+  level:
+    org.example: TRACE
+    ru.nsu.cloud: TRACE

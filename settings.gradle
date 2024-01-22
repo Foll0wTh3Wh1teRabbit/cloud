@@ -5,3 +5,7 @@ include 'executor'
 include 'manager'
 include 'model'
 include 'test-application'
+include 'report-server'
+include 'number-processor'
+include 'executor'
+

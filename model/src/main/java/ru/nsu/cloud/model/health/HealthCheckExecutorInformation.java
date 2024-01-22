@@ -7,12 +7,8 @@ import lombok.Data;
 @Builder
 public class HealthCheckExecutorInformation {
 
-    private String workingHost;
+    private String instanceId;
 
-    private String workingPort;
-
-    private Integer cpu;
-
-    private Integer gpu;
+    private String instanceName;
 
 }

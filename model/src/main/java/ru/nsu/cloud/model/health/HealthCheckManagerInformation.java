@@ -2,8 +2,9 @@ package ru.nsu.cloud.model.health;
 
 import lombok.Builder;
 import lombok.Data;
+import ru.nsu.cloud.model.executor.ExecutorInformation;
 
-import java.util.Set;
+import java.util.Collection;
 
 @Data
 @Builder
@@ -13,6 +14,6 @@ public class HealthCheckManagerInformation {
 
     private String workingPort;
 
-    private Set<String> availableExecutors;
+    private Collection<ExecutorInformation> availableExecutors;
 
 }

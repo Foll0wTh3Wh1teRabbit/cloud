@@ -8,10 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.cloud.manager.configuration.ManagerConfiguration;
+import ru.nsu.cloud.model.executor.ExecutorInformation;
 import ru.nsu.cloud.model.health.HealthCheckManagerInformation;
 
 import java.net.InetAddress;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -28,8 +31,8 @@ public class HealthCheckController {
     public ResponseEntity<HealthCheckManagerInformation> healthCheck() {
         log.info("healthCheck <- received on host:{}, port:{}", InetAddress.getLoopbackAddress().getHostName(), port);
 
-        Set<String> availableExecutors =
-            hazelcastInstance.<String, LocalDateTime> getMap(ManagerConfiguration.AVAILABLE_EXECUTORS_MAP).keySet();
+        Collection<ExecutorInformation> availableExecutors =
+            hazelcastInstance.<String, ExecutorInformation> getMap(ManagerConfiguration.AVAILABLE_EXECUTORS_MAP).values();
 
         return ResponseEntity.ok(
             HealthCheckManagerInformation.builder()

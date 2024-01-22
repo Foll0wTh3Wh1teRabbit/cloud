@@ -19,28 +19,21 @@ public class ExecutorsHealthCheckAcceptor {
     private final HazelcastInstance hazelcastInstance;
 
     public void healthCheckAccept(HealthCheckExecutorInformation healthCheckExecutorInformation) {
-        log.trace("healthCheckAccept <- info:{}", healthCheckExecutorInformation);
+        log.trace("healthCheckAccept <- info: {}", healthCheckExecutorInformation);
 
-        IMap<String, ExecutorInformation> healthCheckMap = hazelcastInstance.getMap(ManagerConfiguration.AVAILABLE_EXECUTORS_MAP);
+        IMap<String, ExecutorInformation> healthCheckMap =
+            hazelcastInstance.getMap(ManagerConfiguration.AVAILABLE_EXECUTORS_MAP);
 
-        String address = String.format(
-            "%s:%s",
-            healthCheckExecutorInformation.getWorkingHost(),
-            healthCheckExecutorInformation.getWorkingPort()
-        );
+        String instanceId = healthCheckExecutorInformation.getInstanceId();
+        String instanceName = healthCheckExecutorInformation.getInstanceName();
 
-        if (healthCheckMap.containsKey(address)) {
-            healthCheckMap.setTtl(address, 15, TimeUnit.SECONDS);
+        if (healthCheckMap.containsKey(instanceId)) {
+            healthCheckMap.setTtl(instanceId, 30, TimeUnit.SECONDS);
         } else {
             healthCheckMap.set(
-                address,
-                ExecutorInformation.builder()
-                    .address(address)
-                    .cpu(healthCheckExecutorInformation.getCpu())
-                    .gpu(healthCheckExecutorInformation.getGpu())
-                    .processesRunning(0)
-                    .build(),
-                15, TimeUnit.SECONDS
+                instanceId,
+                ExecutorInformation.builder().instanceId(instanceId).instanceName(instanceName).build(),
+                30, TimeUnit.SECONDS
             );
         }
 

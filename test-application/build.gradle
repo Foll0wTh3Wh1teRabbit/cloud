@@ -1,7 +1,9 @@
 dependencies {
     implementation project(':core')
+    implementation project(':model')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.google.guava:guava:19.0'
 }
 
 bootJar.enabled = true

@@ -1,26 +1,26 @@
 package ru.nsu.cloud.model.task;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-@Builder
+@SuperBuilder(builderMethodName = "taskBuilder")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task implements Serializable {
+public class Task<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Integer cpu;
+    private String instanceTo;
 
-    private Integer gpu;
+    private T data;
 
-    private Integer timeout;
+    private String serializedData;
 
 }

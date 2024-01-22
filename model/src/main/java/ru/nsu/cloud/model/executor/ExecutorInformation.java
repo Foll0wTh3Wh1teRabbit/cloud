@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder(toBuilder = true)
@@ -17,12 +18,10 @@ public class ExecutorInformation implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private String address;
+    private String instanceId;
 
-    private Integer cpu;
+    private String instanceName;
 
-    private Integer gpu;
-
-    private Integer processesRunning;
+    private List<String> runningTasks;
 
 }

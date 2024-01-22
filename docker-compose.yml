@@ -36,3 +36,65 @@ services:
       - SERVER_PORT=8083
     depends_on:
       - rabbitmq
+
+  report-server:
+    build: ./report-server
+    ports:
+      - "8084:8084"
+    environment:
+      - SERVER_PORT=8084
+    depends_on:
+      - rabbitmq
+      - manager1
+      - manager2
+      - manager3
+
+  number-processor-1:
+    build: ./report-server
+    ports:
+      - "8085:8085"
+    environment:
+      - SERVER_PORT=8085
+    depends_on:
+      - rabbitmq
+      - manager1
+      - manager2
+      - manager3
+
+  number-processor-2:
+    build: ./report-server
+    ports:
+      - "8086:8086"
+    environment:
+      - SERVER_PORT=8086
+    depends_on:
+      - rabbitmq
+      - manager1
+      - manager2
+      - manager3
+
+  number-processor-3:
+    build: ./report-server
+    ports:
+      - "8087:8087"
+    environment:
+      - SERVER_PORT=8087
+    depends_on:
+      - rabbitmq
+      - manager1
+      - manager2
+      - manager3
+
+  test-application:
+    build: ./test-application
+    ports:
+      - "8088:8088"
+    environment:
+      - SERVER_PORT=8088
+    depends_on:
+      - rabbitmq
+      - manager1
+      - manager2
+      - manager3
+      - report-server
+      - number-processor
