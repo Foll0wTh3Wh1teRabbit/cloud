@@ -10,7 +10,7 @@ import ru.nsu.cloud.model.task.MapTask;
 import ru.nsu.cloud.model.task.Task;
 
 import java.util.List;
-import java.util.stream.LongStream;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -26,9 +26,9 @@ public class TestServiceImpl implements TestService {
     @Override
     public void executeRemote() {
         String id = nsuCloudCluster.deployAsyncTask(
-            Task.<List<Long>> taskBuilder()
+            Task.<List<Integer>> taskBuilder()
                 .instanceTo(NUMBER_PROCESSOR)
-                .data(LongStream.range(1, 101).boxed().toList())
+                .data(IntStream.range(1, 101).boxed().toList())
                 .build()
         );
 
@@ -37,10 +37,10 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void executeRemoteWithValue() {
-        Long result = (Long) nsuCloudCluster.deployTask(
-            FunctionTask.<List<Long>, Long> functionTaskBuilder()
+        Integer result = nsuCloudCluster.deployTask(
+            FunctionTask.<List<Integer>, Integer> functionTaskBuilder()
                 .instanceTo(NUMBER_PROCESSOR)
-                .data(LongStream.range(1, 101).boxed().toList())
+                .data(IntStream.range(1, 101).boxed().toList())
                 .build()
         );
 
@@ -50,9 +50,9 @@ public class TestServiceImpl implements TestService {
     @Override
     public void executeRemoteWithMap() {
         List<String> ids = nsuCloudCluster.deployMapTask(
-            MapTask.<List<Long>> mapTaskBuilder()
+            MapTask.<List<Integer>> mapTaskBuilder()
                 .instanceTo(NUMBER_PROCESSOR)
-                .data(LongStream.range(1, 101).boxed().toList())
+                .data(IntStream.range(1, 101).boxed().toList())
                 .mapFunction(new BatchCreator())
                 .build()
         );
@@ -62,10 +62,10 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void executeRemoteWithMapAndValue() {
-        Long result = nsuCloudCluster.deployMapReduceTask(
-            MapReduceTask.<List<Long>, Long, Long> mapReduceTaskBuilder()
+        Integer result = nsuCloudCluster.deployMapReduceTask(
+            MapReduceTask.<List<Integer>, Integer, Integer> mapReduceTaskBuilder()
                 .instanceTo(NUMBER_PROCESSOR)
-                .data(LongStream.range(1, 101).boxed().toList())
+                .data(IntStream.range(1, 101).boxed().toList())
                 .mapFunction(new BatchCreator())
                 .reduceFunction(new SumFunction())
                 .build()

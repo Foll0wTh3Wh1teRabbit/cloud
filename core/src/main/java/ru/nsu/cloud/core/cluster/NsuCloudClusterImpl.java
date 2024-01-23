@@ -85,7 +85,7 @@ public class NsuCloudClusterImpl implements NsuCloudCluster {
         List<V> results = mapReduceTask.getMapFunction().apply(mapReduceTask.getData())
             .stream()
             .map(it -> deployTask(
-                FunctionTask.<T, V>functionTaskBuilder()
+                FunctionTask.<T, V> functionTaskBuilder()
                     .instanceTo(mapReduceTask.getInstanceTo())
                     .data(it)
                     .build()

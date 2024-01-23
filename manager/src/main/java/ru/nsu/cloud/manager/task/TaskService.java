@@ -11,6 +11,8 @@ import ru.nsu.cloud.manager.configuration.ManagerConfiguration;
 import ru.nsu.cloud.model.executor.ExecutorInformation;
 import ru.nsu.cloud.model.task.TaskWithId;
 
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
